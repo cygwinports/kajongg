@@ -1,7 +1,7 @@
-inherit kde4 python
+inherit kf5 python3
 
 NAME="kajongg"
-VERSION=16.08.3
+VERSION=17.04.3
 RELEASE=1
 CATEGORY="Games"
 SUMMARY="KDE multi-player Mahjongg game"
@@ -9,9 +9,22 @@ DESCRIPTION="Part of the KDE games suite"
 
 ARCH=noarch
 
+REQUIRES="sox"
+
+src_compile() {
+	cd ${B}
+	DESTDIR=${D} \
+	PYTHONDONTWRITEBYTECODE=1 \
+	kf5_compile
+}
+
 src_install() {
 	cd ${B}
-	cyginstall
+	kf5_install
 
-	python_optimize /usr/share/kde4/apps/kajongg
+	python3_optimize /usr/share/kajongg
+
+	dodir /usr/bin
+	dosym /usr/share/kajongg/kajongg.py /usr/bin/kajongg
+	dosym /usr/share/kajongg/kajonggserver.py /usr/bin/kajonggserver
 }
